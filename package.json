@@ -1,0 +1,78 @@
+{
+  "name": "@fellow/auth-browser",
+  "version": "5.1.0",
+  "description": "A fork of the Capacitor Browser API only for iOS that supports extra features for authorization.",
+  "main": "dist/plugin.cjs.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "unpkg": "dist/plugin.js",
+  "files": [
+    "dist/",
+    "ios/Plugin/",
+    "FellowAuthBrowser.podspec"
+  ],
+  "author": "Fellow",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fellow/authbrowser"
+  },
+  "bugs": {
+    "url": "https://github.com/fellow/authbrowser/issues"
+  },
+  "keywords": [
+    "capacitor",
+    "plugin",
+    "native",
+    "auth",
+    "ASWebAuthenticationSession"
+  ],
+  "scripts": {
+    "verify": "npm run verify:ios && npm run verify:web",
+    "verify:ios": "cd ios && pod install && xcodebuild -workspace Plugin.xcworkspace -scheme Plugin -destination generic/platform=iOS && cd ..",
+    "verify:web": "npm run build",
+    "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
+    "fmt": "npm run eslint -- --fix && npm run prettier -- --write && npm run swiftlint -- --fix --format",
+    "eslint": "eslint . --ext ts",
+    "prettier": "prettier \"**/*.{css,html,ts,js,java}\"",
+    "swiftlint": "node-swiftlint",
+    "docgen": "docgen --api AuthBrowserPlugin --output-readme README.md --output-json dist/docs.json",
+    "build": "npm run clean && npm run docgen && tsc && rollup -c rollup.config.js",
+    "clean": "./node_modules/rimraf/bin.js ./dist",
+    "watch": "tsc --watch",
+    "prepublishOnly": "npm run build",
+    "publish:cocoapod": "pod trunk push FellowAuthBrowser.podspec --allow-warnings"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^5.0.0",
+    "@capacitor/core": "^5.0.0",
+    "@capacitor/docgen": "0.2.0",
+    "@capacitor/ios": "^5.0.0",
+    "@ionic/eslint-config": "^0.3.0",
+    "@ionic/prettier-config": "~1.0.1",
+    "@ionic/swiftlint-config": "^1.1.2",
+    "eslint": "^7.11.0",
+    "prettier": "~2.3.0",
+    "prettier-plugin-java": "~1.0.2",
+    "rimraf": "^3.0.0",
+    "rollup": "^2.29.0",
+    "swiftlint": "^1.0.1",
+    "typescript": "~4.1.5"
+  },
+  "peerDependencies": {
+    "@capacitor/core": "^5.0.0"
+  },
+  "prettier": "@ionic/prettier-config",
+  "swiftlint": "@ionic/swiftlint-config",
+  "eslintConfig": {
+    "extends": "@ionic/eslint-config/recommended"
+  },
+  "capacitor": {
+    "ios": {
+      "src": "ios"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

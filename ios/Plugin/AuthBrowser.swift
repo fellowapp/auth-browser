@@ -44,36 +44,16 @@ import AuthenticationServices
 
     @objc public func start(for authURL: URL, scheme callbackScheme: String, plugin: CAPAuthBrowserPlugin) -> Bool {
         if let scheme = authURL.scheme?.lowercased(), ["http", "https"].contains(scheme) {
-            session = ASWebAuthenticationSession(url: authURL, callbackURLScheme: callbackScheme)
-            { callbackURL, error in
-                if ((error) != nil) {
-                    let result = AuthBrowserEvent(success: false, url: nil, error: String(describing: error))
-                    self.browserEventDidOccur?(result)
-                } else {
-                    guard let callbackURL = callbackURL else {
-                        let result = AuthBrowserEvent(success: false, url: nil, error: "callbackURL is nil")
-                        self.browserEventDidOccur?(result)
-                        return;
-                    }
-                    
-                    // Verify the URL scheme and remove it
-                    if callbackURL.scheme == callbackScheme {
-                        if let newURL = URL(string: callbackURL.absoluteString.replacingOccurrences(of: "\(callbackScheme)://", with: "")) {
-                            let result = AuthBrowserEvent(success: true, url: newURL.absoluteString, error: nil)
-                            self.browserEventDidOccur?(result)
-                            return;
-                        } else {
-                            let result = AuthBrowserEvent(success: false, url: nil, error: "Error: Failed to create new URL without scheme")
-                            self.browserEventDidOccur?(result)
-                            return;
-                        }
-                    } else {
-                        let result = AuthBrowserEvent(success: false, url: nil, error: "URL Scheme is not \(callbackScheme)")
-                        self.browserEventDidOccur?(result)
-                        return;
-                    }
+            if #available(iOS 17.4, *) {
+                session = ASWebAuthenticationSession(url: authURL, callback: ASWebAuthenticationSession.Callback.customScheme(callbackScheme)) {
+                    callbackURL, error in self.handleAuthSessionResult(callbackURL: callbackURL, error: error, callbackScheme: callbackScheme)
+                }
+            } else {
+                session = ASWebAuthenticationSession(url: authURL, callbackURLScheme: callbackScheme) {
+                    callbackURL, error in self.handleAuthSessionResult(callbackURL: callbackURL, error: error, callbackScheme: callbackScheme)
                 }
             }
+
             session?.presentationContextProvider = plugin
             session?.start()
             return true;
@@ -84,5 +64,35 @@ import AuthenticationServices
     @objc public func abort() {
         session?.cancel()
         session = nil
+    }
+
+    private func handleAuthSessionResult(callbackURL: URL?, error: Error?, callbackScheme: String) {
+        if ((error) != nil) {
+            let result = AuthBrowserEvent(success: false, url: nil, error: String(describing: error))
+            self.browserEventDidOccur?(result)
+        } else {
+            guard let callbackURL = callbackURL else {
+                let result = AuthBrowserEvent(success: false, url: nil, error: "callbackURL is nil")
+                self.browserEventDidOccur?(result)
+                return;
+            }
+
+            // Verify the URL scheme and remove it
+            if callbackURL.scheme == callbackScheme {
+                if let newURL = URL(string: callbackURL.absoluteString.replacingOccurrences(of: "\(callbackScheme)://", with: "")) {
+                    let result = AuthBrowserEvent(success: true, url: newURL.absoluteString, error: nil)
+                    self.browserEventDidOccur?(result)
+                    return;
+                } else {
+                    let result = AuthBrowserEvent(success: false, url: nil, error: "Error: Failed to create new URL without scheme")
+                    self.browserEventDidOccur?(result)
+                    return;
+                }
+            } else {
+                let result = AuthBrowserEvent(success: false, url: nil, error: "URL Scheme is not \(callbackScheme)")
+                self.browserEventDidOccur?(result)
+                return;
+            }
+        }
     }
 }

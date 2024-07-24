@@ -8,8 +8,8 @@ Pod::Spec.new do |s|
   s.summary = package['description']
   s.license = package['license']
   s.author = package['author']
-  s.homepage = "https://github.com/fellow/authbrowser"
-  s.source = { :git => 'https://github.com/fellow/authbrowser.git', :tag => package['name'] + '@' + package['version'] }
+  s.homepage = "https://github.com/fellow/auth-browser"
+  s.source = { :git => 'https://github.com/fellow/auth-browser.git', :tag => package['name'] + '@' + package['version'] }
   s.source_files = 'ios/Plugin/**/*.{swift,h,m,c,cc,mm,cpp}', 'browser/ios/Plugin/**/*.{swift,h,m,c,cc,mm,cpp}'
   s.ios.deployment_target  = '13.0'
   s.dependency 'Capacitor'

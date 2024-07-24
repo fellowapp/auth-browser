@@ -1,6 +1,6 @@
 {
   "name": "@fellow/auth-browser",
-  "version": "5.1.0",
+  "version": "5.1.1",
   "description": "A fork of the Capacitor Browser API only for iOS that supports extra features for authorization.",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -15,10 +15,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fellow/authbrowser"
+    "url": "https://github.com/fellow/auth-browser"
   },
   "bugs": {
-    "url": "https://github.com/fellow/authbrowser/issues"
+    "url": "https://github.com/fellow/auth-browser/issues"
   },
   "keywords": [
     "capacitor",

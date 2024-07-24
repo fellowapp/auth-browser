@@ -1,4 +1,4 @@
-# @fellow/authbrowser
+# @fellow/auth-browser
 
 The Auth Browser API provides the ability to open an in-app browser and subscribe to browser events.
 
@@ -9,14 +9,14 @@ on Android please use `@capacitor/browser` plugin.
 ## Install
 
 ```bash
-npm install @fellow/authbrowser
+npm install @fellow/auth-browser
 npx cap sync
 ```
 
 ## Example
 
 ```typescript
-import { AuthBrowser } from '@fellow/authbrowser';
+import { AuthBrowser } from '@fellow/auth-browser';
 
 const LoginWithN = async (n: string) => {
     const result = await AuthBrowser.start({

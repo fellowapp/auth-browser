@@ -4,8 +4,8 @@ type SuccessResult = {
 };
 
 type FailureResult = {
-    success: false;
-    error: string;
+  success: false;
+  error: string;
 };
 
 export type SuccessOrFailureResult = SuccessResult | FailureResult;

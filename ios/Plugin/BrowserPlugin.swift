@@ -5,14 +5,14 @@ import Capacitor
 @objc(CAPAuthBrowserPlugin)
 public class CAPAuthBrowserPlugin: CAPPlugin, ASWebAuthenticationPresentationContextProviding {
     private let implementation = AuthBrowser()
-    
+
     public func presentationAnchor(for session: ASWebAuthenticationSession) -> ASPresentationAnchor {
         var view: ASPresentationAnchor?
-        
+
         DispatchQueue.main.sync {
             view = self.bridge?.webView?.window
         }
-        
+
         return view ?? ASPresentationAnchor()
     }
 

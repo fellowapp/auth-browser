@@ -15,10 +15,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fellow/auth-browser"
+    "url": "https://github.com/fellowapp/auth-browser"
   },
   "bugs": {
-    "url": "https://github.com/fellow/auth-browser/issues"
+    "url": "https://github.com/fellowapp/auth-browser/issues"
   },
   "keywords": [
     "capacitor",
